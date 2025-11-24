@@ -1,0 +1,27 @@
+# Eclipse / IntelliJ / Java
+bin/
+target/
+out/
+*.class
+
+# Build
+.gradle/
+.mvn/
+
+# IDE files
+.settings/
+.classpath
+.project
+.idea/
+*.iml
+
+# Reports
+extent-reports/
+test-output/
+surefire-reports/
+
+# System files
+.DS_Store
+
+# Logs
+*.log
