@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:     # manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -26,14 +26,11 @@ jobs:
       - name: Install ChromeDriver
         uses: nanasess/setup-chromedriver@v2
 
-      - name: Set ChromeDriver path
-        run: echo "CHROMEWEBDRIVER=$env:ChromeWebDriver" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      # DO NOT SET webdriver.chrome.driver manually — Selenium auto-detects it
 
       - name: Run Tests
-        run: mvn -B test -Dtestng.dtd.http=true -Dwebdriver.chrome.driver=$env:ChromeWebDriver\chromedriver.exe
+        run: mvn -B test -Dtestng.dtd.http=true
 
-
-      # Step 5: Upload TestNG reports
       - name: Upload TestNG Reports
         uses: actions/upload-artifact@v4
         with:
@@ -41,7 +38,6 @@ jobs:
           path: target/surefire-reports/
           if-no-files-found: warn
 
-      # Step 6: Upload Extent Reports
       - name: Upload Extent Reports
         uses: actions/upload-artifact@v4
         with:
