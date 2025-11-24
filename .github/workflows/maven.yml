@@ -32,14 +32,30 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Run Maven Tests
+      # Step 4: Install Google Chrome
+      - name: Install Chrome
+        run: choco install googlechrome --no-progress
+
+      # Step 5: Install ChromeDriver
+      - name: Install ChromeDriver
+        run: choco install chromedriver --ignore-checksums --no-progress
+
+      # Step 6: Run Maven Tests
       - name: Run Tests (Maven)
         run: mvn clean test -X
 
-      # Step 5: Upload Extent Reports
+      # Step 7: Upload Extent Reports
       - name: Upload Extent Report Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ExtentReports
           path: extent-reports/
+          if-no-files-found: warn
+
+      # Step 8: Upload TestNG Reports
+      - name: Upload TestNG Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: TestNG-Reports
+          path: test-output/
           if-no-files-found: warn
