@@ -111,6 +111,7 @@ Your `testng.xml` enables multi-browser or multi-test parallel runs:
   </test>
 </suite>
 
+---
  ✅ 3. Extent Reports Integration
 
 All test steps logged
@@ -141,3 +142,4 @@ Screenshot saved: extent-reports/screenshots/testLoginFromExcel.png
 📄 License
 
 This project is open-source and free to use for learning and automation practice.
+
