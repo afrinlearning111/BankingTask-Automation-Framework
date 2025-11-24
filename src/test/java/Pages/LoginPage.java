@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage {
+
     WebDriver driver;
 
     By username = By.name("uid");
@@ -20,39 +21,57 @@ public class LoginPage {
     }
 
     public void login(String user, String pass) {
+
         driver.findElement(username).clear();
         driver.findElement(username).sendKeys(user);
+
         driver.findElement(password).clear();
         driver.findElement(password).sendKeys(pass);
+
         driver.findElement(loginBtn).click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
+        // 1️⃣ SUCCESS CASE → Manager Page Loaded
         try {
-            // CASE 1 — SUCCESS LOGIN → Detect Welcome Marquee
             wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//marquee[text()=\"Welcome To Manager's Page of Guru99 Bank\"]")
+                    By.xpath("//marquee[contains(text(),\"Welcome To Manager\")]")
             ));
-
             System.out.println("[PASS] Login successful for: " + user);
+            return;
+        } catch (Exception ignore) {}
 
-        } catch (Exception e) {
+        // 2️⃣ FAILURE CASE → Alert Present
+        try {
+            Alert alert = driver.switchTo().alert();
+            String msg = alert.getText();
+            alert.accept();
 
-            // CASE 2 — FAILURE LOGIN → Detect the alert
-            try {
-                Alert alert = driver.switchTo().alert();
-                String msg = alert.getText();
-                alert.accept();
+            System.out.println("[FAIL] Login failed for: " + user + " | Reason: " + msg);
 
-                System.out.println("[FAIL] Login failed for: " + user + " | Reason: " + msg);
+            throw new AssertionError(
+                    "Invalid login for user: " + user + " | Message: " + msg
+            );
 
-                // Throw error → TestNG marks test as FAIL → Extent report FAIL
-                throw new AssertionError("Invalid login for user: " + user + " | Message: " + msg);
+        } catch (Exception ignore) {}
 
-            } catch (Exception alertNotFound) {
-                // No alert → unknown failure
-                throw new AssertionError("Login failed for " + user + " but no alert was shown.");
-            }
-        }
+        // 3️⃣ FAILURE CASE → Error message displayed on page (No alert)
+        try {
+            String errorMsg = driver.findElement(
+                    By.xpath("//td[@class='heading3' or @class='heading3']/span")
+            ).getText();
+
+            System.out.println("[FAIL] Login failed for " + user + " | Page Message: " + errorMsg);
+
+            throw new AssertionError(
+                    "Invalid login for user: " + user + " | Page Message: " + errorMsg
+            );
+
+        } catch (Exception ignore) {}
+
+        // 4️⃣ UNKNOWN FAILURE → Nothing was detectable
+        throw new AssertionError(
+                "Login failed for " + user + " but no alert or page message appeared."
+        );
     }
 }

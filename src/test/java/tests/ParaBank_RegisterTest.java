@@ -15,12 +15,12 @@ public class ParaBank_RegisterTest {
 
     @Parameters("browser")
     @BeforeMethod
-    public void setUp(String browser) {
+    public void setUp(@Optional("chrome") String browser) {
 
-        // Create browser instance (Chrome / Edge / Firefox)
+        // Create browser instance safely
         WebDriver driver = BrowserFactory.createInstance(browser);
 
-        // Set to ThreadLocal
+        // Store inside ThreadLocal
         Drivefactory.setDriver(driver);
 
         // Navigate to URL
@@ -33,7 +33,10 @@ public class ParaBank_RegisterTest {
     @Test
     public void NewRegister() {
 
-        Drivefactory.getDriver().findElement(By.xpath("//a[text()='Register']")).click();
+        // Wait + Click Register link
+        Drivefactory.getDriver()
+                .findElement(By.xpath("//a[text()='Register']"))
+                .click();
 
         register.RegisterNewCustomer(
                 "Testerrr",
@@ -50,7 +53,7 @@ public class ParaBank_RegisterTest {
         );
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         Drivefactory.quitDriver();
     }
