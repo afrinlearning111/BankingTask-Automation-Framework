@@ -9,25 +9,16 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class BrowserFactory {
 
     public static WebDriver createInstance(String browser) {
-        WebDriver driver;
+
+        WebDriver driver = null;
 
         switch (browser.toLowerCase()) {
-
             case "chrome":
-                ChromeOptions options = new ChromeOptions();
-
-                // ✔ required for GitHub Actions CI
-                options.addArguments("--headless=new");
-                options.addArguments("--no-sandbox");
-                options.addArguments("--disable-dev-shm-usage");
-                options.addArguments("--disable-gpu");
-                options.addArguments("--window-size=1920,1080");
-
-                driver = new ChromeDriver(options);
+                driver = new ChromeDriver();
                 break;
 
             case "edge":
-                driver = new EdgeDriver();
+                driver = new EdgeDriver();   // NO PATH REQUIRED
                 break;
 
             case "firefox":
@@ -38,6 +29,7 @@ public class BrowserFactory {
                 throw new IllegalArgumentException("Invalid browser: " + browser);
         }
 
+        driver.manage().window().maximize();
         return driver;
     }
 }
