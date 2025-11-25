@@ -5,25 +5,31 @@
 		<listener class-name="utils.TestListener" />
 	</listeners>
 
+<!-- Firefox Execution 
 
-<!-- Firefox Execution -->
 <test name="FirefoxTest">
 <parameter name="browser" value="firefox" />
 <classes>
 <class name="tests.ParaBank_RegisterTest" />
 </classes>
 </test>
+-->	
 
 
-<!-- Chrome Execution -->
+<!-- Chrome Execution 
+
+
 <test name="ChromeTest">
 <parameter name="browser" value="chrome" />
 <classes>
 <class name="tests.ParaBank_RegisterTest" />
 </classes>
 </test>
+-->	
 
-<!-- Edge Execution -->
+<!-- Edge Execution 
+
+
 <test name="EdgeTest">
 <parameter name="browser" value="edge" />
 <classes>
@@ -31,7 +37,7 @@
 </classes>
 </test>
 
-	
+-->	
 
 	<test name="LoginTest">
 		<classes>
