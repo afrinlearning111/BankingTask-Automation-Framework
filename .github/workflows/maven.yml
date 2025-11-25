@@ -31,7 +31,7 @@ jobs:
         run: echo "WEBDRIVER_PATH=$env:ChromeWebDriver\chromedriver.exe" >> $env:GITHUB_ENV
 
       - name: Run Tests
-        run: mvn test -Dwebdriver.chrome.driver="$env:WEBDRIVER_PATH" -Dtestng.dtd.http=true
+        run:     mvn test "-Dwebdriver.chrome.driver=$env:WEBDRIVER_PATH" -Dtestng.dtd.http=true
 
       - name: Upload TestNG Reports
         uses: actions/upload-artifact@v4
